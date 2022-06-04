@@ -50,16 +50,16 @@ class Venue(db.Model):
     phone = db.Column(db.String(120), unique=True)
     image_link = db.Column(db.String(500),unique=True)
     facebook_link = db.Column(db.String(500))
-    website = db.Column(db.String(500),nullable=True)
+    website = db.Column(db.String(500))
     seeking_talent = db.Column(db.Boolean, default=False)
     seeking_description = db.Column(db.String(500),default="We are looking for Talent")
     genres = db.relationship('Genre',secondary=venuegenres , lazy='subquery',backref=db.backref('venues', lazy=True))####
-    aria_id = db.Column(db.Integer, db.ForeignKey('areas.id'),
+    area_id = db.Column(db.Integer, db.ForeignKey('areas.id'),
                         nullable=False)
     artists = db.relationship("Artist", secondary="shows")
 
     def __repr__(self):
-      return f'<Venue:{self.id}, {self.name}, AID:{self.aria_id}>'
+      return f'<Venue:{self.id}, {self.name}, AID:{self.area_id}>'
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 class Artist(db.Model):
@@ -72,13 +72,14 @@ class Artist(db.Model):
     phone = db.Column(db.String(120))
     image_link = db.Column(db.String(500))
     facebook_link = db.Column(db.String(500))
-    website = db.Column(db.String(500),nullable=True)
+    website = db.Column(db.String(500))
     seeking_venue = db.Column(db.Boolean, default=False)
     seeking_description = db.Column(db.String(500),default="I am looking for Venues")
     genres = db.relationship('Genre',secondary=artistgenres , lazy='subquery',backref=db.backref('artists', lazy=True))####
-    aria_id = db.Column(db.Integer, db.ForeignKey('areas.id'),
+    area_id = db.Column(db.Integer, db.ForeignKey('areas.id'),
                         nullable=False)
     venues = db.relationship("Venue", secondary="shows")
     def __repr__(self):
-      return f'<Artist:{self.id}, {self.name}, AID:{self.aria_id}>'
+      return f'<Artist:{self.id}, {self.name}, AID:{self.area_id}>'
+
 

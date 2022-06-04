@@ -1,7 +1,30 @@
 from datetime import datetime
 from flask_wtf import Form
 from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField
-from wtforms.validators import DataRequired, AnyOf, URL
+from wtforms.validators import DataRequired, AnyOf, URL,Regexp
+
+
+genres_choices = [
+    'Alternative',
+    'Blues',
+    'Classical', 
+    'Country', 
+    'Electronic', 
+    'Folk', 
+    'Funk', 
+    'Hip-Hop', 
+    'Heavy Metal',
+    'Instrumental',
+    'Jazz', 
+    'Musical Theatre', 
+    'Pop', 
+    'Punk', 
+    'R&B', 
+    'Reggae', 
+    'Rock n Roll', 
+    'Soul', 
+    'Other', 
+]
 
 class ShowForm(Form):
     artist_id = StringField(
@@ -83,14 +106,14 @@ class VenueForm(Form):
         'address', validators=[DataRequired()]
     )
     phone = StringField(
-        'phone'
+        'phone',validators=[Regexp(regex='^([0-9]{3})[-][0-9]{3}[-][0-9]{4}$',message='use correct phone number')]
     )
     image_link = StringField(
         'image_link'
     )
     genres = SelectMultipleField(
         # TODO implement enum restriction
-        'genres', validators=[DataRequired()],
+        'genres', validators=[DataRequired(),AnyOf(values=genres_choices)],
         choices=[
             ('Alternative', 'Alternative'),
             ('Blues', 'Blues'),
@@ -193,13 +216,13 @@ class ArtistForm(Form):
     )
     phone = StringField(
         # TODO implement validation logic for phone 
-        'phone'
+        'phone',validators=[Regexp(regex='^([0-9]{3})[-][0-9]{3}[-][0-9]{4}$',message='use correct phone number')]
     )
     image_link = StringField(
         'image_link'
     )
     genres = SelectMultipleField(
-        'genres', validators=[DataRequired()],
+        'genres', validators=[DataRequired(),AnyOf(values=genres_choices)],
         choices=[
             ('Alternative', 'Alternative'),
             ('Blues', 'Blues'),
